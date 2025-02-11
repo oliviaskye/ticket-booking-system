@@ -18,24 +18,38 @@
 #include <C:\ticket-booking-system\rapidjson\filewritestream.h>
 #include <stdio.h>
 #include <C:\ticket-booking-system\sqlite\sqlite3.h>
-sqlite3* db;
 // sqlite 3 db connection:
 // open the database
-void openDB(char* records, sqlite3* database)
-{
-    int opened = sqlite3_open("records.db", &database);
-    if(opened){ // check if opening the database is successful
-        std::cout << ("Database could not be opened %s \n", sqlite3_errmsg(database)) << std::endl;
-    } else {
-        std::cout << ("opened database successfuly \n") << std::endl;
-         db = database;
-    }
-}
-int main(int, char**){
-    char* records = "db.sqlite3";
-    openDB(records,  db);
 
+static int createDB(const char* s);
+static int createTable(const char* s);
+
+int main(){
+    const char* dir = "C:\ticket-booking-system\database\RECORDS.db";
+    createDB(dir);
+    createTable(dir);
+    sqlite3* DB;
+
+    return 0;
 }
+
+// attempt 1:
+// void openDB(char* records, sqlite3* database)
+// {
+//     int opened = sqlite3_open("records.db", &database);
+//     if(opened){ // check if opening the database is successful
+//         std::cout << ("Database could not be opened %s \n", sqlite3_errmsg(database)) << std::endl;
+//     } else {
+//         std::cout << ("opened database successfuly \n") << std::endl;
+//         db = database;
+//     }
+// }
+// int main(int, char**){
+//     char* records = "db.sqlite3";
+//     openDB(records, db);
+
+// }
+// attempt 2:
 // int main(int argc, char* argv[]) {
 //    sqlite3 *db;
 //    char *zErrMsg = 0;
@@ -92,7 +106,7 @@ void showings(){
     std::cout << "-----------------------\n";
 };
 
-void makeBooking(){
+void makeBooking(sqlite3* db){
 
     showings();
     int film_choice;
@@ -124,7 +138,11 @@ void makeBooking(){
     user.lastname = lastname;
     user.booked = true;
 
-
+    std::string sql = "INSERT INTO Users (name) VALUES ('" + firstname + " " + lastname + "');";
+    sqlite3_exec(db, sql.c_str(), 0, 0, 0);
+    int user_id = sqlite3_last_insert_rowid(db);
+    sql = "INSERT INTO Reservations (user_id, film_id) VALUES (" + std::to_string(user_id) + ", " + std::to_string(film_choice) + ");";
+    sqlite3_exec(db, sql.c_str(), 0, 0, 0);
 
     std::cout << "Successful ticket booking.\nInfo:\n name: " << user.firstname << " " << user.lastname << "\n film: " << user.film << std::endl;
     std::cout << "-----------------------\n";
