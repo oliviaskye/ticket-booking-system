@@ -1,21 +1,11 @@
 #include <iostream>
 #include <C:\ticket-booking-system\nlohmann\json.hpp>
-//#include <C:\ticket-booking-system\makeBooking.cpp>
-//#include <C:\ticket-booking-system\showings.cpp>
 #include <exception>
 #include <fstream>
-#include <sstream>
-#include <map>
 #include <string>
-// #include <bits/stdc++.h>
 #include <ios>
 #include <typeinfo>
 #include <limits>
-#include <C:\ticket-booking-system\rapidjson\document.h>
-#include <C:\ticket-booking-system\rapidjson\writer.h>
-#include <C:\ticket-booking-system\rapidjson\stringbuffer.h>
-#include <C:\ticket-booking-system\rapidjson\filereadstream.h>
-#include <C:\ticket-booking-system\rapidjson\filewritestream.h>
 #include <stdio.h>
 #include <C:\ticket-booking-system\sqlite\sqlite3.h>
 
