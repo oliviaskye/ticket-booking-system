@@ -1,0 +1,20 @@
+{
+    "films": [
+        {
+            "id": 1,
+            "name": "The Big Country"
+        },
+        {
+            "id": 2,
+            "name": "Monty Python and the Holy Grail"
+        },
+        {
+            "id": 3,
+            "name": "The Truman Show"
+        },
+        {
+            "id": 4,
+            "name": "Bambi II"
+        }
+    ]
+}

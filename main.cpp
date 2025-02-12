@@ -89,6 +89,7 @@ void makeBooking(json& db) {
     while (i==0){
         showingNow(db);
         std::cout << "Which film would you like to reserve a ticket for? Enter ID:\n";
+        std::cin >> film_choice;
         bool filmExists = false;
         while (filmExists == false){
             for (const auto& film : db["films"]) {
@@ -135,10 +136,10 @@ int main(){
     json db = loadRecords();
     if (db.find("films") == db.end()) {
         db["films"] = json::array({
-            { {"id", 1}, {"name", "The Big Country"}, {"length", 165} },
-            { {"id", 2}, {"name", "Monty Python and the Holy Grail"}, {"length", 91} },
-            { {"id", 3}, {"name", "The Truman Show"}, {"length", 103} },
-            { {"id", 4}, {"name", "Bambi II"}, {"length", 72} }
+            {{"id", 1}, {"name", "The Big Country"}},
+            {{"id", 2}, {"name", "Monty Python and the Holy Grail"}},
+            {{"id", 3}, {"name", "The Truman Show"}},
+            {{"id", 4}, {"name", "Bambi II"}}
         });
         saveRecords(db);
     }
