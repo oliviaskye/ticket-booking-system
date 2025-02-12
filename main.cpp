@@ -33,10 +33,6 @@ void saveRecords(const json& db) {
 
 // Function to list all available films
 void showingNow(const json& db) {
-    if (db.find("films") == db.end() || db["films"].empty()) {
-        std::cout << "No films available.\n";
-        return;
-    }
     std::cout << "Available Films:\n----------------------\n";
     for (const auto& film : db["films"]) {
         std::cout << "ID: " << film["id"] << " - " << film["name"] << std::endl;
@@ -84,15 +80,15 @@ void makeBooking(json& db) {
     std::cout << "Ticket booked successfully.\n";
 }
 
-// void viewBooking(const json& db, int bookingId) {
-//     bool bookingExists = false;
-//     for (const auto& reservation : db["reservations"]) {
-//         if (reservation["id"] == bookingId) {
-//             bookingExists = true;
-//             break;
-//         }
-//     }
-// }
+void viewBooking(const json& db, int bookingId) {
+    bool bookingExists = false;
+    for (const auto& reservation : db["reservations"]) {
+        if (reservation["id"] == bookingId) {
+            bookingExists = true;
+            break;
+        }
+    }
+}
 
 int main(){
 
