@@ -87,26 +87,23 @@ void makeBooking(json& db) {
     int film_choice;
     int i = 0;
     while (i==0){
-        int choice;
         showingNow(db);
-        std::cout << "which film would you like to reserve a ticket for?):\n";
-        while (!(std::cin >> choice) || choice > 4 || choice < 1){
-            bool filmExists = false;
+        std::cout << "Which film would you like to reserve a ticket for? Enter ID:\n";
+        bool filmExists = false;
+        while (filmExists == false){
             for (const auto& film : db["films"]) {
-                if (film["id"] == filmId) {
+                if (film["id"] == film_choice) {
                     filmExists = true;
                     break;
                 }
             }
             if (!filmExists) {
                 std::cout << "Invalid choice, select another film.\n";
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 return;
-            }
-            std::cout << "invalid input, try again" << std::endl;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }            
         }
-        film_choice = choice;
         i=1;
         break;
     }
