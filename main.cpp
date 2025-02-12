@@ -107,24 +107,12 @@ void makeBooking(json& db) {
         i=1;
         break;
     }
-
-    // Check if the film ID exists
-    
-
-    // booking user;
-    // user.film = films[film_choice-1];
-    // user.userName = userName;
-    // user.lastname = lastname;
-    // user.booked = true;
-
-    // std::cout << "Successful ticket booking.\nInfo:\n name: " << user.userName << " " << user.lastname << "\n film: " << user.film << std::endl;
-    // std::cout << "-----------------------\n";
     
     // Create reservation entry
     json reservation;
     reservation["id"] = db["reservations"].size() + 1;
     reservation["user"] = userName;
-    reservation["filmId"] = filmId;
+    reservation["filmId"] = film_choice;
     db["reservations"].push_back(reservation);
     saveRecords(db);
     std::cout << "Ticket booked successfully. Info:" << userName << "\n";
