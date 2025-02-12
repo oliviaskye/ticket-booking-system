@@ -13,7 +13,7 @@
 // #include <C:\ticket-booking-system\sqlite\sqlite3.h>
 using json = nlohmann::json;
 
-const std::string dbFile = "records.json"; 
+const std::string dbFile = "records.json";
 // const std::string films[4] = {"The Big Country", "Monty Python and the Holy Grail", "The Truman Show", "Bambi II"};
 // void showings(){
 //     std::cout << "Today's showings:\n";
@@ -51,9 +51,9 @@ class Reservation {
 };
 
 json loadRecords() {
-    std::ifstream file(dbFile);
+    std::fstream file(dbFile);
     if (!file.is_open()) {
-        return json::object(); 
+        return json::object();
     }
     json db;
     file >> db;
@@ -102,12 +102,12 @@ void makeBooking(json& db) {
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 return;
-            }            
+            }
         }
         i=1;
         break;
     }
-    
+
     // Create reservation entry
     json reservation;
     reservation["id"] = db["reservations"].size() + 1;
@@ -118,19 +118,30 @@ void makeBooking(json& db) {
     std::cout << "Ticket booked successfully.\n";
 }
 
-void viewBooking(const json& db, int bookingId) {
-    bool bookingExists = false;
-    for (const auto& reservation : db["reservations"]) {
-        if (reservation["id"] == bookingId) {
-            
-            bookingExists = true;
-            break;
-        }
-    }
+// void viewBooking(const json& db, int bookingId) {
+//     bool bookingExists = false;
+//     for (const auto& reservation : db["reservations"]) {
+//         if (reservation["id"] == bookingId) {
 
-}
+//             bookingExists = true;
+//             break;
+//         }
+//     }
+
+// }
 
 int main(){
+
+    json db = loadRecords();
+    if (db.find("films") == db.end()) {
+        db["films"] = json::array({
+            { {"id", 1}, {"name", "The Big Country"}, {"length", 165} },
+            { {"id", 2}, {"name", "Monty Python and the Holy Grail"}, {"length", 91} },
+            { {"id", 3}, {"name", "The Truman Show"}, {"length", 103} },
+            { {"id", 4}, {"name", "Bambi II"}, {"length", 72} }
+        });
+        saveRecords(db);
+    }
 
     int i = 0;
     while (i == 0){
@@ -151,11 +162,12 @@ int main(){
             case 1:
                 showingNow(db);
                 break;
-            case 2: 
+            case 2:
                 makeBooking(db);
                 break;
             case 3:
-                viewBooking(db, bookingId);
+                std::cout << "run view booking";
+                // viewBooking(db);
                 break;
             case 4:
                 std::cout << "run change booking";
