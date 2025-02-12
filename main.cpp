@@ -14,7 +14,16 @@
 using json = nlohmann::json;
 
 const std::string dbFile = "records.json"; // File path for storing data
-const std::string films[4] = {"The Big Country", "Monty Python and the Holy Grail", "The Truman Show", "Bambi II"};
+// const std::string films[4] = {"The Big Country", "Monty Python and the Holy Grail", "The Truman Show", "Bambi II"};
+// void showings(){
+//     std::cout << "Today's showings:\n";
+//     int i = 1;
+//     for (std::string film : films) {
+//         std::cout << i << ": " << film << "\n";
+//         i++;
+//     };
+//     std::cout << "-----------------------\n";
+// };
 
 struct booking {
     int idnum;
@@ -51,28 +60,28 @@ json loadRecords() {
     return db;
 }
 
-// Function to save the JSON saveRecords to a file
+// Function to save the JSON rcords to a file
 void saveRecords(const json& db) {
     std::ofstream file(dbFile);
     file << db.dump(4); // Save with indentation for readability
 }
 
 // Function to list all available films
-// void listFilms(const json& db) {
-//     if (db.find("films") == db.end() || db["films"].empty()) {
-//         std::cout << "No films available.\n";
-//         return;
-//     }
-//     std::cout << "Available Films:\n----------------------\n";
-//     for (const auto& film : db["films"]) {
-//         std::cout << "ID: " << film["id"] << " - " << film["name"] << " (" << film["length"] << " min)\n";
-//     }
-// }
+void showingNow(const json& db) {
+    if (db.find("films") == db.end() || db["films"].empty()) {
+        std::cout << "No films available.\n";
+        return;
+    }
+    std::cout << "Available Films:\n----------------------\n";
+    for (const auto& film : db["films"]) {
+        std::cout << "ID: " << film["id"] << " - " << film["name"] << " (" << film["length"] << " min)\n";
+    }
+}
 
 // Function to add a reservation
-void makeReservation(json& db, const std::string& user_name, int film_id) {
+void makeBooking(json& db, const std::string& user_name, int film_id) {
     if (db.find("films") == db.end() || db["films"].empty()) {
-        std::cout << "No films available for reservation.\n";
+        std::cout << "No films available right now.\n";
         return;
     }
     
@@ -85,33 +94,9 @@ void makeReservation(json& db, const std::string& user_name, int film_id) {
         }
     }
     if (!filmExists) {
-        std::cout << "Invalid film ID.\n";
+        std::cout << "Invalid choice, select another film.\n";
         return;
     }
-    
-    // Create reservation entry
-    json reservation;
-    reservation["id"] = db["reservations"].size() + 1;
-    reservation["user"] = user_name;
-    reservation["film_id"] = film_id;
-    db["reservations"].push_back(reservation);
-    saveRecords(db);
-    std::cout << "Reservation successful for " << user_name << "!\n";
-}
-
-void showings(){
-    std::cout << "Today's showings:\n";
-    int i = 1;
-    for (std::string film : films) {
-        std::cout << i << ": " << film << "\n";
-        i++;
-    };
-    std::cout << "-----------------------\n";
-};
-
-void makeBooking(){
-
-    showings();
     int film_choice;
     int i = 0;
     while (i==0){
@@ -143,8 +128,16 @@ void makeBooking(){
 
     std::cout << "Successful ticket booking.\nInfo:\n name: " << user.firstname << " " << user.lastname << "\n film: " << user.film << std::endl;
     std::cout << "-----------------------\n";
-
-};
+    
+    // Create reservation entry
+    json reservation;
+    reservation["id"] = db["reservations"].size() + 1;
+    reservation["user"] = user_name;
+    reservation["film_id"] = film_id;
+    db["reservations"].push_back(reservation);
+    saveRecords(db);
+    std::cout << "Reservation successful for " << user_name << "!\n";
+}
 
 void viewBooking() {
 
@@ -257,46 +250,3 @@ int main(){
 
     return 0;
 };
-
-
-
-#include <iostream> // Standard input-output library
-#include <fstream> // File handling for JSON storage
-#include <C:\ticket-booking-system\nlohmann\json.hpp> // JSON library for handling data
-#include <string> // String library for handling text
-
-using json = nlohmann::json; // Alias for JSON usage
-
-
-
-int main() {
-    json db = loadDatabase(); // Load database from JSON file
-
-    // Ensure films exist in the database
-    if (db.find("films") == db.end()) {
-        db["films"] = json::array({
-            { {"id", 1}, {"name", "The Big Country"}, {"length", 165} },
-            { {"id", 2}, {"name", "Monty Python and the Holy Grail"}, {"length", 91} },
-            { {"id", 3}, {"name", "The Truman Show"}, {"length", 103} },
-            { {"id", 4}, {"name", "Bambi II"}, {"length", 72} }
-        });
-        saveRecords(db);
-    }
-    
-    std::cout << "1. List Films\n2. Make Reservation\nChoose an option: ";
-    int choice;
-    std::cin >> choice;
-    
-    if (choice == 1) {
-        listFilms(db);
-    } else if (choice == 2) {
-        std::string name;
-        int film_id;
-        std::cout << "Enter your name: ";
-        std::cin >> name;
-        std::cout << "Enter film ID: ";
-        std::cin >> film_id;
-        makeReservation(db, name, film_id);
-    }
-    return 0;
-}
