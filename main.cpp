@@ -14,41 +14,6 @@
 using json = nlohmann::json;
 
 const std::string dbFile = "records.json";
-// const std::string films[4] = {"The Big Country", "Monty Python and the Holy Grail", "The Truman Show", "Bambi II"};
-// void showings(){
-//     std::cout << "Today's showings:\n";
-//     int i = 1;
-//     for (std::string film : films) {
-//         std::cout << i << ": " << film << "\n";
-//         i++;
-//     };
-//     std::cout << "-----------------------\n";
-// };
-
-struct booking {
-    int idnum;
-    std::string userName;
-    std::string lastname;
-    std::string film;
-    bool booked;
-};
-
-class Film {
-    std::string name;
-    int length;
-    int filmId;
-};
-
-class User {
-    std::string name;
-    int userId;
-};
-
-class Reservation {
-    int filmId;
-    int userId;
-    int reservationId;
-};
 
 json loadRecords() {
     std::fstream file(dbFile);
@@ -113,7 +78,7 @@ void makeBooking(json& db) {
     json reservation;
     reservation["id"] = db["reservations"].size() + 1;
     reservation["user"] = userName;
-    reservation["filmId"] = film_choice;
+    reservation["id"] = film_choice;
     db["reservations"].push_back(reservation);
     saveRecords(db);
     std::cout << "Ticket booked successfully.\n";
@@ -123,12 +88,10 @@ void makeBooking(json& db) {
 //     bool bookingExists = false;
 //     for (const auto& reservation : db["reservations"]) {
 //         if (reservation["id"] == bookingId) {
-
 //             bookingExists = true;
 //             break;
 //         }
 //     }
-
 // }
 
 int main(){
