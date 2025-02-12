@@ -115,7 +115,7 @@ void makeBooking(json& db) {
     reservation["filmId"] = film_choice;
     db["reservations"].push_back(reservation);
     saveRecords(db);
-    std::cout << "Ticket booked successfully. Info:" << userName << "\n";
+    std::cout << "Ticket booked successfully.\n";
 }
 
 void viewBooking(const json& db, int bookingId) {
