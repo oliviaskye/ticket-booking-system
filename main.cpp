@@ -13,7 +13,7 @@
 // #include <C:\ticket-booking-system\sqlite\sqlite3.h>
 using json = nlohmann::json;
 
-const std::string dbFile = "records.json"; // File path for storing data
+const std::string dbFile = "records.json"; 
 // const std::string films[4] = {"The Big Country", "Monty Python and the Holy Grail", "The Truman Show", "Bambi II"};
 // void showings(){
 //     std::cout << "Today's showings:\n";
@@ -27,7 +27,7 @@ const std::string dbFile = "records.json"; // File path for storing data
 
 struct booking {
     int idnum;
-    std::string firstname;
+    std::string userName;
     std::string lastname;
     std::string film;
     bool booked;
@@ -53,7 +53,7 @@ class Reservation {
 json loadRecords() {
     std::ifstream file(dbFile);
     if (!file.is_open()) {
-        return json::object(); // Return empty JSON object if file doesn't exist
+        return json::object(); 
     }
     json db;
     file >> db;
@@ -74,29 +74,16 @@ void showingNow(const json& db) {
     }
     std::cout << "Available Films:\n----------------------\n";
     for (const auto& film : db["films"]) {
-        std::cout << "ID: " << film["id"] << " - " << film["name"] << " (" << film["length"] << " min)\n";
+        std::cout << "ID: " << film["id"] << " - " << film["name"] << std::endl;
     }
 }
 
 // Function to add a reservation
-void makeBooking(json& db, const std::string& user_name, int film_id) {
-    if (db.find("films") == db.end() || db["films"].empty()) {
-        std::cout << "No films available right now.\n";
-        return;
-    }
-    
-    // Check if the film ID exists
-    bool filmExists = false;
-    for (const auto& film : db["films"]) {
-        if (film["id"] == film_id) {
-            filmExists = true;
-            break;
-        }
-    }
-    if (!filmExists) {
-        std::cout << "Invalid choice, select another film.\n";
-        return;
-    }
+void makeBooking(json& db) {
+    std::cout << "Please enter a name for the reservation: \n";
+    std::string userName;
+    std::cin >> userName;
+
     int film_choice;
     int i = 0;
     while (i==0){
@@ -110,92 +97,54 @@ void makeBooking(json& db, const std::string& user_name, int film_id) {
         film_choice = choice;
         i=1;
         break;
+    }
+
+    // Check if the film ID exists
+    bool filmExists = false;
+    for (const auto& film : db["films"]) {
+        if (film["id"] == filmId) {
+            filmExists = true;
+            break;
         }
+    }
+    if (!filmExists) {
+        std::cout << "Invalid choice, select another film.\n";
+        return;
+    }
 
-    std::cout << "Please enter your first name: \n";
-    std::string firstname;
-    std::cin >> firstname;
+    // booking user;
+    // user.film = films[film_choice-1];
+    // user.userName = userName;
+    // user.lastname = lastname;
+    // user.booked = true;
 
-    std::cout << "Please enter your last name: \n";
-    std::string lastname;
-    std::cin >> lastname;
-
-    booking user;
-    user.film = films[film_choice-1];
-    user.firstname = firstname;
-    user.lastname = lastname;
-    user.booked = true;
-
-    std::cout << "Successful ticket booking.\nInfo:\n name: " << user.firstname << " " << user.lastname << "\n film: " << user.film << std::endl;
-    std::cout << "-----------------------\n";
+    // std::cout << "Successful ticket booking.\nInfo:\n name: " << user.userName << " " << user.lastname << "\n film: " << user.film << std::endl;
+    // std::cout << "-----------------------\n";
     
     // Create reservation entry
     json reservation;
     reservation["id"] = db["reservations"].size() + 1;
-    reservation["user"] = user_name;
-    reservation["film_id"] = film_id;
+    reservation["user"] = userName;
+    reservation["filmId"] = filmId;
     db["reservations"].push_back(reservation);
     saveRecords(db);
-    std::cout << "Reservation successful for " << user_name << "!\n";
+    std::cout << "Ticket booked successfully. Info:" << userName << "\n";
 }
 
-void viewBooking() {
-
-    // json j = "{ \"happy\": true, \"pi\": 3.141 }"_json;
-    // std::cout << j << std::endl;
-    // std::cout << typeid(j).name() << std::endl;
-    // std::string s = j.dump();
-    // std::cout << s << std::endl;
-    // std::cout << typeid(s).name() << std::endl;
-
-    //using namespace ns;
-    // std::ifstream f("records.jsonl");
-    // json data = json::parse(f);
-    // std::cout << data << std::endl;
-    // f.close();
-    try {
-        std::ifstream f("records.json");
-        json data = json::parse(f);
-        std::cout << data << std::endl;
-
-        f.close();
-        //std::fstream f("records.jsonl");
-        // std::cout << f << std::endl;
-        // std::string s = f.dump();
-        // f.close();
-
-        //TODO: return
-       //std::fstream lines("C:\ticket booking\records.json", std::ios::in);
-        // std::cout << lines << std::endl;
-
-        //std::ifstream jsonFile("records.jsonl", std::ios::in);
-        //json parsed_json = json::parse(jsonFile);
-        //std::cout << parsed_json;
-
-        //std::stringstream lines;
-        //lines << file;
-
-        //std::fstream s;
-        //s.open("records.jsonl");
-        //std::stringstream lines;
-        //lines << s;
-        //TODO: return
-        //std::string line;
-        //while(std::getline(lines, line))
-        //{
-          //  std::cout << json::parse(line) << std::endl;
-        //}
+void viewBooking(const json& db, int bookingId) {
+    bool bookingExists = false;
+    for (const auto& reservation : db["reservations"]) {
+        if (reservation["id"] == bookingId) {
+            
+            bookingExists = true;
+            break;
+        }
     }
-    catch (json::parse_error& e)
-      {
-        // output exception information
-        std::cout << "message: " << e.what() << '\n'
-                  << "exception id: " << e.id << '\n'
-                  << "byte position of error: " << e.byte << std::endl;
-      }
+
 }
 
 int main(){
+
     int i = 0;
     while (i == 0){
         std::cout << "Ticket Booking \n";
@@ -207,27 +156,15 @@ int main(){
         std::cout << "-----------------------\n";
         std::cout << "Choose a function (1-5): \n";
 
-        //try {
-
-            //if (user_choice){
-              //  return user_choice;
-            //}
-            //else {
-            //    throw "invalid choice";
-            //}
-        //}
-        //catch (...){
-            //continue;
-        //};
-        //while (true){
         int user_choice;
         std::cin >> user_choice;
         std::cout << "-----------------------\n";
+
         switch(user_choice){
             case 1:
                 showings();
                 break;
-            case 2:
+            case 2: 
                 makeBooking();
                 break;
             case 3:
@@ -245,7 +182,6 @@ int main(){
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
-        //};
     };
 
     return 0;
