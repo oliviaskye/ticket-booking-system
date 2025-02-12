@@ -1,0 +1,31 @@
+{
+    "films": [
+        {
+            "id": 1,
+            "length": 165,
+            "name": "The Big Country"
+        },
+        {
+            "id": 2,
+            "length": 91,
+            "name": "Monty Python and the Holy Grail"
+        },
+        {
+            "id": 3,
+            "length": 103,
+            "name": "The Truman Show"
+        },
+        {
+            "id": 4,
+            "length": 72,
+            "name": "Bambi II"
+        }
+    ],
+    "reservations": [
+        {
+            "film_id": 3,
+            "id": 1,
+            "user": "jeff"
+        }
+    ]
+}
