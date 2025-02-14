@@ -16,5 +16,27 @@
             "id": 4,
             "name": "Bambi II"
         }
+    ],
+    "reservations": [
+        {
+            "filmId": 3,
+            "id": 1,
+            "user": "james"
+        },
+        {
+            "filmId": 1,
+            "id": 2,
+            "user": "Olivia"
+        },
+        {
+            "filmId": 3,
+            "id": 3,
+            "user": "markus"
+        },
+        {
+            "filmId": 1,
+            "id": 4,
+            "user": "Jamie"
+        }
     ]
 }
