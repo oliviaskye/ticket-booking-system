@@ -22,6 +22,11 @@
             "filmId": 3,
             "id": 1,
             "user": "james"
+        },
+        {
+            "filmId": 1,
+            "id": 2,
+            "user": "Olivia"
         }
     ]
 }
