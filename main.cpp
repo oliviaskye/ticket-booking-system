@@ -32,6 +32,7 @@ void showingNow(const json& db) {
     for (const auto& film : db["films"]) {
         std::cout << "ID: " << film["id"] << " - " << film["name"] << std::endl;
     }
+    std::cout << "----------------------\n";
 }
 
 // Add a reservation
@@ -58,6 +59,7 @@ void makeBooking(json& db) {
                 std::cout << "Invalid choice, select another film.\n";
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "-----------------------\n";
                 return;
             }
         }
@@ -74,6 +76,7 @@ void makeBooking(json& db) {
     db["reservations"].push_back(reservation);
     saveRecords(db);
     std::cout << "Ticket booked successfully. Your booking ID is:" << bookingId << std::endl;
+    std::cout << "-----------------------\n";
 
 }
 
@@ -87,6 +90,7 @@ void viewBooking(const json& db) {
             for (const auto& film : db["films"]){
                 if (reservation["filmId"] == film["id"]){
                     std::cout << "Ticket booked for " << reservation["user"] << " for a showing of " << film["name"] << std::endl;
+                    std::cout << "-----------------------\n";
                     break;
                 }
             }
