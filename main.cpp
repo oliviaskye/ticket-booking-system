@@ -5,12 +5,10 @@
 #include <sstream>
 #include <map>
 #include <string>
-// #include <bits/stdc++.h>
 #include <ios>
 #include <typeinfo>
 #include <limits>
 #include <stdio.h>
-// #include <C:\ticket-booking-system\sqlite\sqlite3.h>
 using json = nlohmann::json;
 
 const std::string dbFile = "records.json";
